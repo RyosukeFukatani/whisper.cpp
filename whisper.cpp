@@ -3950,6 +3950,7 @@ int whisper_full_with_state(
     }
 
     // initialize the decoders
+    fprintf(stderr, "%s: start to initialize decoder.\n", __func__);
     int n_decoders = 1;
 
     switch (params.strategy) {
@@ -3987,6 +3988,7 @@ int whisper_full_with_state(
     }
 
     // the accumulated text context so far
+    fprintf(stderr, "%s: start to prepare prompt.\n", __func__);
     auto & prompt_past = state->prompt_past;
     if (params.no_context) {
         prompt_past.clear();
@@ -4014,6 +4016,7 @@ int whisper_full_with_state(
         }
     }
 
+    fprintf(stderr, "%s: start to audio ctx.\n", __func__);
     // overwrite audio_ctx, max allowed is hparams.n_audio_ctx
     if (params.audio_ctx > whisper_n_audio_ctx(ctx)) {
         fprintf(stderr, "%s: audio_ctx is larger than the maximum allowed (%d > %d)\n", __func__, params.audio_ctx, whisper_n_audio_ctx(ctx));
@@ -4050,6 +4053,7 @@ int whisper_full_with_state(
 
     std::vector<kv_buf> kv_bufs;
 
+    fprintf(stderr, "%s: start to beam candidate.\n", __func__);
     struct beam_candidate {
         int decoder_idx;
         int seek_delta;
